@@ -2,11 +2,8 @@
 import { MdSearch, MdOutlineDateRange, MdLocationOn,  MdUpgrade, MdEventSeat, MdShoppingBag, MdHotel, MdMiscellaneousServices } from "react-icons/md";
 import dynamic from "next/dynamic";
 import "react-multi-carousel/lib/styles.css";
-import { GiDeer, GiHangGlider, GiFishingBoat } from "react-icons/gi";
-import { CiFlag1 } from "react-icons/ci";
-import { WiTime3 } from "react-icons/wi";
-import { FaPeopleCarry, FaLocationArrow, FaCalendarCheck } from "react-icons/fa";
-import { FaPeopleGroup } from "react-icons/fa6";
+import { FaLocationArrow, FaCalendarCheck } from "react-icons/fa";
+
 
 // Import `Carousel` với dynamic import để tắt SSR
 const Carousel = dynamic(() => import("react-multi-carousel"), { ssr: false });
@@ -43,15 +40,15 @@ export default function Hero() {
       </video>
 
       <div className="flex flex-col items-center justify-center relative z-10 lg:h-full h-screen max-w-[1200px] px-6 lg:pt-0 pt-16 mx-auto">
-        <p className="text-3xl text-orange">Let's explore</p>
-        <h4 className="lg:text-[52px] text-3xl text-white">Where Would You Like To Go?</h4>
-        <p className="text-gray text-2xl my-8">Checkout Beautiful Places Around the World.</p>
+        <p className="text-3xl text-orange">Hãy cùng khám phá</p>
+        <h4 className="lg:text-[52px] text-3xl text-white mt-5">Bạn muốn bay đến những đâu?</h4>
+        <p className="text-gray text-2xl my-8">Khám phá những điểm đến tuyệt đẹp.</p>
 
         <div className="bg-white grid lg:grid-cols-5 grid-cols-1 rounded-lg w-full">
           <span className="flex items-center py-7 border-r border-gray relative pl-4">
             <MdLocationOn className="text-4xl text-orange" />
             <span className="flex flex-col justify-center absolute h-full left-16 right-2">
-              <p className="text-gray text-sm">From</p>
+              <p className="text-gray text-sm">Từ</p>
               <select className="text-sm font-bold w-full">
                 <option>Destinations</option>
                 <option>Asia</option>
@@ -65,7 +62,7 @@ export default function Hero() {
           <span className="flex items-center py-7 border-r border-gray relative pl-4">
             <FaLocationArrow className="text-4xl text-orange" />
             <span className="flex flex-col justify-center absolute h-full left-16 right-2">
-              <p className="text-gray text-sm">To</p>
+              <p className="text-gray text-sm">Đến</p>
               <select className="text-sm font-bold w-full">
                 <option>Activity</option>
                 <option>Adventure</option>
@@ -82,7 +79,7 @@ export default function Hero() {
           <span className="flex items-center py-7 border-r border-gray relative pl-4">
             <MdOutlineDateRange className="text-4xl text-orange" />
             <span className="flex flex-col justify-center absolute h-full left-16 right-2">
-              <p className="text-gray text-sm">Depart Date</p>
+              <p className="text-gray text-sm">Ngày đi</p>
               <input type="date" className="text-sm font-bold w-full" />
             </span>
           </span>
@@ -90,7 +87,7 @@ export default function Hero() {
           <span className="flex items-center py-7 border-r border-gray relative pl-4">
             <FaCalendarCheck className="text-4xl text-orange" />
             <span className="flex flex-col justify-center absolute h-full left-16 right-2">
-              <p className="text-gray text-sm">Return Date</p>
+              <p className="text-gray text-sm">Ngày về</p>
               <input type="date" className="text-sm font-bold w-full" />
             </span>
           </span>

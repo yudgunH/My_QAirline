@@ -1,17 +1,14 @@
 // components/Destination.js
 import dynamic from "next/dynamic";
+import { useEffect, useState } from 'react';
 import "react-multi-carousel/lib/styles.css";
 import Image from 'next/image';
 import { CiHeart, CiCamera } from "react-icons/ci";
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
+import Link from "next/link";
+
+import flights from "@/data/featuredFlights.json";
 
 import {
   MdStar,
@@ -44,6 +41,43 @@ const responsive = {
     items: 1,
   },
 };
+
+const FlightCard = ({ flight }) => (
+  <Card key={flight.id} className="relative overflow-hidden group cursor-pointer h-[400px] text-left">
+    {/* Flight Image */}
+    <Image
+      src={flight.image}
+      alt={`${flight.from} đến ${flight.to}`}
+      width={600}
+      height={400}
+      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+    />
+
+    {/* Flight Position */}
+    <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
+      {flight.position}
+    </div>
+
+    {/* Card Content */}
+    <div className="absolute bottom-0 w-full h-1/2 bg-orange/70  p-4">
+      {/* Flight Info (Top Left) */}
+      <div className="text-white">
+        <h4 className="text-lg font-semibold">
+          {flight.from} đến {flight.to}
+        </h4>
+        <p className="text-sm">{flight.date}</p>
+      </div>
+
+      {/* Flight Details (Bottom Right) */}
+      <div className="absolute bottom-4 right-4 text-white text-right">
+        <div className="text-sm">Từ</div>
+        <div className="text-xl font-bold">{flight.price} VND*</div>
+        <div className="text-sm">{flight.views}</div>
+        <div className="text-sm">Một chiều / Phổ thông</div>
+      </div>
+    </div>
+  </Card>
+);
 
 const Places = ({ image, country, tours, column }) => (
   <div className={`relative overflow-hidden h-[270px] lg:col-span-${column}`}>
@@ -110,136 +144,40 @@ const Tours = ({ image, name }) => (
   </div>
 );
 
-const flights = [
-  {
-    id: 1,
-    from: "Hà Nội",
-    to: "TP. Hồ Chí Minh",
-    date: "26/01/2025",
-    price: "979.000",
-    views: "Đã xem: 7 phút trước",
-    image: "/landmark81.jpg",
-    position: "1/16"
-  },
-  {
-    id: 2,
-    from: "Hà Nội",
-    to: "Đà Nẵng",
-    date: "19/01/2025",
-    price: "1.153.000",
-    views: "Đã xem: 4 phút trước",
-    image: "/golden_bridge.jpg",
-    position: "2/16"
-  },
-  {
-    id: 3,
-    from: "Hà Nội",
-    to: "Đà Lạt",
-    date: "14/01/2025",
-    price: "957.000",
-    views: "Đã xem: 7 phút trước",
-    image: "/dalat_diocese_cathedral.jpg",
-    position: "3/16"
-  },
-  {
-    id: 4,
-    from: "Hà Nội",
-    to: "Huế",
-    date: "24/12/2024",
-    price: "1.162.000",
-    views: "Đã xem: 42 phút trước",
-    image: "/tuduc_tomb.jpg",
-    position: "4/16"
-  },
-]
-
 export default function Destination() {
+
+  const [visibleCount, setVisibleCount] = useState(4);
+
+  // Xử lý khi bấm nút "Xem thêm"
+  const handleShowMore = () => {
+    setVisibleCount((prevCount) => prevCount + 4);
+  };
+
+  // Kiểm tra nếu đã hiển thị hết thẻ
+  const isShowMoreVisible = visibleCount < flights.length;
+
   return (
     <div className="lg:mt-60 mt-10" data-aos="fade-down">
       
       <div className="max-w-[1200px] px-6 mx-auto text-center">
-      <p className="text-orange text-xl">Featured Flights</p>
-      <h4 className="font-bold lg:text-[50px] text-[30px] py-4">Our Most Popular Flights</h4>
-
-      {/* Select Dropdowns */}
-      <div className="flex flex-wrap justify-center gap-4 mb-8">
-        {/* Select Location */}
-        <Select defaultValue="hanoi">
-          <SelectTrigger className="w-[240px] border border-gray-300 rounded-lg">
-            <SelectValue placeholder="Select Location" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="hanoi">Hà Nội (HAN), Việt Nam</SelectItem>
-            <SelectItem value="hcm">TP. Hồ Chí Minh (SGN), Việt Nam</SelectItem>
-            <SelectItem value="danang">Đà Nẵng (DAD), Việt Nam</SelectItem>
-          </SelectContent>
-        </Select>
-
-        {/* Select Budget */}
-        <Select defaultValue="budget">
-          <SelectTrigger className="w-[180px] border border-gray-300 rounded-lg">
-            <SelectValue placeholder="Select Budget" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="budget">Under $100</SelectItem>
-            <SelectItem value="mid-range">$100 - $500</SelectItem>
-            <SelectItem value="luxury">Above $500</SelectItem>
-          </SelectContent>
-        </Select>
-
-        {/* Clear Button */}
-        <Button variant="link" className="text-blue-600">
-          Clear
-        </Button>
-      </div>
+      {/* <p className="text-orange text-xl">Featured Flights</p> */}
+      <h4 className="font-bold lg:text-[50px] text-[30px] py-4">Các Chuyến Bay Phổ Biến Nhất</h4>
 
       {/* Flights List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {flights.map((flight) => (
-          <Card key={flight.id} className="overflow-hidden group cursor-pointer">
-            <div className="relative">
-              
-              {/* Flight Position */}
-              <div className="absolute top-2 right-2 bg-black/50 text-white px-2 py-1 rounded text-sm">
-                {flight.position}
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {flights.slice(0, visibleCount).map((flight) => (
+            <FlightCard key={flight.id} flight={flight} />
+          ))}
+        </div>
 
-              {/* Flight Image */}
-              <Image
-                src={flight.image}
-                alt={`${flight.from} to ${flight.to}`}
-                width={600}
-                height={400}
-                className="object-cover h-60 w-full group-hover:scale-105 transition-transform duration-300"
-              />
-
-              {/* Flight Info Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent">
-                <div className="absolute bottom-0 p-4 text-white">
-                  <div className="text-lg font-semibold">
-                    {flight.from} to {flight.to}
-                  </div>
-                  <div className="text-xl font-bold mb-2">{flight.date}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Flight Details */}
-            <CardContent className="p-4 bg-orange bg-opacity-30">
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="text-sm text-muted-foreground">From</div>
-                  <div className="text-xl font-bold">{flight.price} VND*</div>
-                </div>
-                <div className="text-right">
-                  <div className="text-sm text-muted-foreground">{flight.views}</div>
-                  <div className="text-sm text-muted-foreground">One Way / Economy</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+        {/* Nút "Xem thêm" */}
+        {isShowMoreVisible && (
+          <div className="text-center mt-8">
+            <Button onClick={handleShowMore} className="bg-orange text-white px-6 py-2 rounded-md">
+              Xem thêm
+            </Button>
+          </div>
+        )}
     
     </div>
       
@@ -249,27 +187,35 @@ export default function Destination() {
           <div className="relative lg:w-1/2" data-aos="fade-down">
             <img src="/image-6.jpg" alt="" />
             <div className="absolute top-4 right-4">
-              <p className="text-orange font-semibold text-[80px]">30%</p>
-              <p className="text-[50px] font-semibold -mt-8">Discount</p>
+              <p className="text-orange font-semibold text-[80px]">10%</p>
+              <p className="text-[50px] font-semibold -mt-8">Giảm giá</p>
             </div>
             <button className="bg-white shadow-md px-12 py-4 absolute left-4 top-1/2 rounded-xl">
-              <p className="text-gray text-xs font-medium">Book Tour Now</p>
+              <p className="text-gray text-xs font-medium">Đặt chuyến bay ngay</p>
               <p className="font-semibold text-lg">66888000</p>
             </button>
           </div>
           <div className="lg:w-1/2" data-aos="fade-up">
-            <p className="text-orange text-xl">Get to know us</p>
-            <h4 className="font-bold lg:text-[50px] text-[30px] py-4">Plan Your Trip with Trevily</h4>
+            <p className="text-orange text-xl">Hãy đến với chúng tôi</p>
+            <h4 className="font-bold lg:text-[50px] text-[30px] py-4">Tận hưởng chuyến bay của bạn với QAirline</h4>
             <p className="text-[#757783] leading-8 mb-8">
-              There are many variations of passages available, but the majority have suffered alteration.
+                Có nhiều lựa chọn chuyến bay, đảm bảo an toàn và thoải mái cho bạn.
             </p>
             <span className="flex items-center gap-4 py-2 font-medium">
-              <MdCheck className="bg-orange text-white rounded-xl" /> Invest in your simply neighborhood
+              <MdCheck className="bg-orange text-white rounded-xl" /> Đầu tư vào hành trình khám phá của chính bạn.
+            </span>
+            <span className="flex items-center gap-4 py-2 font-medium">
+              <MdCheck className="bg-orange text-white rounded-xl" /> Đồng hành cùng bạn trên mọi hành trình đầy cảm xúc.
+            </span>
+            <span className="flex items-center gap-4 py-2 font-medium">
+              <MdCheck className="bg-orange text-white rounded-xl" /> Trải nghiệm dịch vụ đẳng cấp, mang đến sự hài lòng tuyệt đối.
             </span>
             <div className="mt-8">
-              <button className="bg-orange text-white text-xs font-bold rounded-md px-8 h-12 hoverBtn">
-                BOOK WITH US NOW
-              </button>
+              <Link href="/">
+                <button className="bg-orange text-white text-xs font-bold rounded-md px-8 h-12 hoverBtn">
+                  ĐẶT CHUYẾN BAY NGAY
+                </button>
+              </Link>
             </div>
           </div>
         </div>
