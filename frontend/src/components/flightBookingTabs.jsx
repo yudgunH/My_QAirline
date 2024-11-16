@@ -19,22 +19,32 @@ const FlightBookingTabs = () => {
   return (
     <div className="w-full min-h-screen flex items-center justify-center">
       <div className="w-full max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg">
+        
         <Tabs defaultValue="buy" className="w-full">
           {/* Tab Navigation */}
-          <TabsList className="grid w-full grid-cols-3 bg-teal-700 text-white h-auto rounded-t-lg">
-            <TabsTrigger value="buy" className="flex items-center gap-2 py-4 data-[state=active]:bg-teal-600">
-              <Plane className="h-5 w-5" />
-              MUA VÉ
-            </TabsTrigger>
-            <TabsTrigger value="manage" className="flex items-center gap-2 py-4 data-[state=active]:bg-teal-600">
-              <TicketIcon className="h-5 w-5" />
-              QUẢN LÝ ĐẶT CHỖ
-            </TabsTrigger>
-            <TabsTrigger value="checkin" className="flex items-center gap-2 py-4 data-[state=active]:bg-teal-600">
-              <UserCircle className="h-5 w-5" />
-              LÀM THỦ TỤC
-            </TabsTrigger>
-          </TabsList>
+            <TabsList className="grid w-full grid-cols-3 bg-gray text-textColor h-auto rounded-t-lg">
+                <TabsTrigger
+                value="buy"
+                className="flex items-center gap-2 py-4 text-textColor data-[state=active]:bg-orange data-[state=active]:text-white"
+                >
+                <Plane className="h-5 w-5" />
+                MUA VÉ
+                </TabsTrigger>
+                <TabsTrigger
+                value="manage"
+                className="flex items-center gap-2 py-4 text-textColor data-[state=active]:bg-orange data-[state=active]:text-white"
+                >
+                <TicketIcon className="h-5 w-5" />
+                QUẢN LÝ ĐẶT CHỖ
+                </TabsTrigger>
+                <TabsTrigger
+                value="checkin"
+                className="flex items-center gap-2 py-4 text-textColor data-[state=active]:bg-orange data-[state=active]:text-white"
+                >
+                <UserCircle className="h-5 w-5" />
+                LÀM THỦ TỤC
+                </TabsTrigger>
+            </TabsList>
 
           {/* Mua Vé Tab */}
           <TabsContent value="buy" className="mt-6">
@@ -106,7 +116,7 @@ const FlightBookingTabs = () => {
                 </div>
               </div>
 
-              <Button className="w-full bg-yellow-500">TÌM CHUYẾN BAY</Button>
+              <Button className="w-full bg-red">TÌM CHUYẾN BAY</Button>
             </div>
           </TabsContent>
 
@@ -114,14 +124,14 @@ const FlightBookingTabs = () => {
           <TabsContent value="manage" className="mt-6">
             <Input placeholder="Mã đặt chỗ/Số vé điện tử" />
             <Input placeholder="Họ" />
-            <Button className="w-full bg-yellow-500">TÌM KIẾM</Button>
+            <Button className="w-full bg-red">TÌM KIẾM</Button>
           </TabsContent>
 
           {/* Làm Thủ Tục Tab */}
           <TabsContent value="checkin" className="mt-6">
             <Input placeholder="Mã đặt chỗ" />
             <Input placeholder="Họ" />
-            <Button className="w-full bg-yellow-500">LÀM THỦ TỤC</Button>
+            <Button className="w-full bg-red">LÀM THỦ TỤC</Button>
           </TabsContent>
         </Tabs>
       </div>
