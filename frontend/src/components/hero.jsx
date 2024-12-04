@@ -8,8 +8,8 @@ import {
 } from "react-icons/md";
 import dynamic from "next/dynamic";
 import "react-multi-carousel/lib/styles.css";
-import SearchForm from "./searchFlightsForm";
-import FlightBookingTabs from '@/components/flightBookingTabs';
+import SearchForm from "./SearchFlightsForm";
+import FlightBookingTabs from '@/components/FlightBookingTabs';
 
 
 // Import `Carousel` với dynamic import để tắt SSR
@@ -46,12 +46,9 @@ export default function Hero() {
       >
         <source src="/video.mp4" type="video/mp4" />
       </video>
-      
-      {/* Overlay để làm tối nền video */}
-      <div className="absolute inset-0 bg-black opacity-50 z-15"></div>
+    
 
-      <div className="relative z-20 lg:h-full h-screen max-w-[1200px] px-6 lg:pt-0 pt-16 mx-auto flex flex-col items-center justify-center">
-        {/* Nội dung văn bản */}
+      <div className="relative z-20 lg:h-full h-screen max-w-[1200px] px-2 lg:pt-0 pt-16 mx-auto flex flex-col items-center justify-center">
         <div className="text-center mb-8">
           <p className="text-3xl text-orange">Hãy cùng khám phá</p>
           <h4 className="lg:text-[52px] text-3xl text-white mt-5">
@@ -62,9 +59,9 @@ export default function Hero() {
           </p>
         </div>
 
-        {/* SearchForm với vị trí tuyệt đối */}
         <div className="w-full flex items-center justify-center">
-          <SearchForm />
+          {/* <SearchForm /> */}
+          <FlightBookingTabs />
         </div>
       </div>
 
@@ -83,27 +80,27 @@ export default function Hero() {
           >
             <div className="shadow-xl bg-white p-8 mb-10 rounded-lg flex flex-col justify-center items-center gap-4">
               <MdUpgrade className="rounded-full w-20 h-20 p-4 bg-[#e5faf5] text-[#3fd2a8] hover:bg-orange hover:text-white" />
-              <p className="font-bold">Upgrade</p>
+              <p className="font-bold">Nâng cấp vé</p>
             </div>
 
             <div className="shadow-xl bg-white p-8 mb-10 rounded-lg flex flex-col justify-center items-center gap-4">
               <MdEventSeat className="rounded-full w-20 h-20 p-4 bg-[#26B2EC24] text-[#06aff6] hover:bg-orange hover:text-white" />
-              <p className="font-bold">Seat Selection</p>
+              <p className="font-bold">Chọn chỗ ngồi</p>
             </div>
 
             <div className="shadow-xl bg-white p-8 mb-10 rounded-lg flex flex-col justify-center items-center gap-4">
               <MdShoppingBag className="rounded-full w-20 h-20 p-4 bg-[#f5ecfd] text-[#9e60e5] hover:bg-orange hover:text-white" />
-              <p className="font-bold">Shopping</p>
+              <p className="font-bold">Mua sắm</p>
             </div>
 
             <div className="shadow-xl bg-white p-8 mb-10 rounded-lg flex flex-col justify-center items-center gap-4">
               <MdHotel className="rounded-full w-20 h-20 p-4 bg-[#fff4de] text-[#f6b23b] hover:bg-orange hover:text-white" />
-              <p className="font-bold">Hotels & Tours</p>
+              <p className="font-bold">Khách sạn</p>
             </div>
 
             <div className="shadow-xl bg-white p-8 mb-10 rounded-lg flex flex-col justify-center items-center gap-4">
               <MdMiscellaneousServices className="rounded-full w-20 h-20 p-4 bg-[#D036321C] text-[#d03632] hover:bg-orange hover:text-white" />
-              <p className="font-bold">Other Services</p>
+              <p className="font-bold">Những dịch vụ khác</p>
             </div>
           </Carousel>
       </div>
