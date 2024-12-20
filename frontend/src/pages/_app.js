@@ -1,82 +1,30 @@
 import '../styles/index.css';
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { useEffect, useState } from "react";
+import MainLayout from "../layouts/MainLayout";
+import AdminLayout from "../layouts/AdminLayout";
+import { AuthProvider } from '../context/AuthContext';
 import { useRouter } from "next/router";
-
+import { useAppLogic } from '../hooks/useAppLogic';
+import { Toaster } from "@/components/ui/toaster";
 function MyApp({ Component, pageProps }) {
-  const [showScrollTopButton, setShowScrollTopButton] = useState(false);
-  const [lastClickY, setLastClickY] = useState(0);
   const router = useRouter();
+  const { showScrollTopButton, handleScrollToTop } = useAppLogic(router);
 
-  const smoothScroll = (targetPosition, duration) => {
-    const startPosition = window.scrollY;
-    const distance = targetPosition - startPosition;
-    let startTime = null;
-
-    const animation = (currentTime) => {
-      if (!startTime) startTime = currentTime;
-      const timeElapsed = currentTime - startTime;
-      const progress = Math.min(timeElapsed / duration, 1);
-
-      const ease = (t) => t * (2 - t);
-
-      const scrollY = startPosition + distance * ease(progress);
-      window.scrollTo(0, scrollY);
-
-      if (progress < 1) {
-        requestAnimationFrame(animation);
-      }
-    };
-
-    requestAnimationFrame(animation);
-  };
-
-  const handleScrollToClick = (event) => {
-    if (event.target.tagName === "A" || event.target.tagName === "BUTTON") return;
-
-    const mouseY = event.clientY;
-    const threshold = 200; 
-
-    if (Math.abs(mouseY - lastClickY) < threshold) return;
-
-    setLastClickY(mouseY);
-
-    const targetPosition = window.scrollY + mouseY - window.innerHeight / 2;
-    smoothScroll(targetPosition, 800);
-  };
-
-  const handleScrollToTop = (event) => {
-    event.stopPropagation();
-    smoothScroll(0, 800);
-  };
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      window.scrollTo(0, 0);
-    };
-
-    router.events.on("routeChangeComplete", handleRouteChange);
-
-    document.addEventListener("click", handleScrollToClick);
-
-    const handleScroll = () => {
-      setShowScrollTopButton(window.scrollY > 300);
-    };
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-      document.removeEventListener("click", handleScrollToClick);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [lastClickY, router.events]);
+  const isValidAdminPage = router.pathname.startsWith('/admin');
+  const isAdminLoginPage = router.pathname === '/admin';
 
   return (
-    <>
-      <Navbar />
-      <Component {...pageProps} />
-      <Footer />
+    <AuthProvider>
+      {isValidAdminPage ? 
+      ( isAdminLoginPage ? <Component {...pageProps} /> :
+        <AdminLayout>
+          <Component {...pageProps} />
+        </AdminLayout>
+      ) : (
+        <MainLayout>
+          <Component {...pageProps} />
+        </MainLayout>
+      )}
+      <Toaster />
 
       {showScrollTopButton && (
         <button
@@ -97,7 +45,7 @@ function MyApp({ Component, pageProps }) {
           ↑
         </button>
       )}
-    </>
+    </AuthProvider>
   );
 }
 
